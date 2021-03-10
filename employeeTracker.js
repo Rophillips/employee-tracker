@@ -12,10 +12,51 @@ const connection = mysql.createConnection ({
     database: "employee_Tracker_DB"
 });
 
-//Connection
-connection.connect(function(err){
+connection.connect(err =>{
     if (err) throw err;
-    console.log("Connection Id " + connection.threadID)
-    //startQuestions();
-    
+    startQuestions();
 })
+
+function startQuestions(){  
+inquirer.prompt({
+    name: "employeeChoice",
+    type: "list",
+    message: "What would you like to do today?",
+    choices: [
+        "view departments",
+        "view roles",
+        "view employees",
+        "add departments",
+        "add roles",
+        "add employees",
+        "update employee roles",
+    ]
+}).then(response =>{
+    let userChoice = response.employeeChoice;
+    switch(userChoice){
+        case "view departments":
+            viewDepartments();
+            break;
+        default:
+            console.log("choose option");
+            break;
+    }
+})}
+
+
+function viewDepartments(){
+    connection.query("SELECT * FROM department",
+    (err, results) =>{
+        if (err) throw err;
+        console.table(results);
+        startQuestions();
+    }) 
+}
+function viewEmployees(){
+    connection.connect(function(err){
+        if (err) throw err;
+        console.log("Connection Id " + connection.threadID)
+        startQuestions();
+        
+    })
+}
