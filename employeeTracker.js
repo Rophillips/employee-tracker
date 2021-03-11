@@ -26,6 +26,8 @@ connection.connect(err =>{
 
 //app.listen(PORT, () => console.log("listening on port: " + PORT));
 
+
+//start prompt for questions
 function startQuestions(){  
 inquirer.prompt({
     name: "employeeChoice",
@@ -74,7 +76,7 @@ inquirer.prompt({
             break;
 
         case "add employees":
-            addEmployess();
+            addEmployees();
             break;
 
         case "update employee roles":
@@ -84,7 +86,7 @@ inquirer.prompt({
     }
 })}
 
-
+//view departments
 function viewDepartments(){
     connection.query("SELECT * FROM department",
     (err, results) =>{
@@ -93,6 +95,8 @@ function viewDepartments(){
         startQuestions();
     }) 
 }
+
+//view employees
 function viewEmployees(){
     
     connection.query("SELECT * FROM employee",
@@ -106,6 +110,8 @@ function viewEmployees(){
     })
 }
 
+
+//view roles
 function viewRoles(){
     connection.query("SELECT * FROM role",
     (err, results) =>{
@@ -145,7 +151,7 @@ function addRoles() {
         {
             name: "Title",
             type: "input",
-            message: "What is the roles Title?"
+            message: "What is the Title of the role?"
         },
         {
             name: "Salary",
@@ -166,5 +172,57 @@ function addRoles() {
                 startQuestions();
             }
         )
+    })
+}
+
+//select role function queries role title for add employee questions
+let roleArr = [];
+function selectRole() {
+    connection.query("SELECT * FROM role", function(err, response){
+        if (err) throw err
+        for (var i = 0; i < response.length; i++) {
+            roleArr.push(response[i].title);
+        }
+    })
+        return roleArr;
+}
+
+function addEmployees() {
+    inquirer.prompt([
+        {
+            name: "firstname",
+            type: "input",
+            message: "Please enter first name"
+        },
+
+        {   name: "lastname",
+            type: "input",
+            message: "Please enter last name"
+        },
+
+        {
+            name: "role",
+            type: "list",
+            message: "What is their role?",
+            choices: selectRole()
+        },
+
+        //need to call selectrole function
+    ]).then(function (value){
+        var roleID = selectRole().indexOf(value.role) + 1
+        //var manager ID????????
+        connection.query("INSERT INTO employee SET ?",
+        
+        {
+            first_name: value.firstName,
+            last_name: value.lastName,
+            //mgr id?????
+            role_id: roleID
+        
+        }, function(err) {
+            if (err) throw err
+            console.table(value)
+            startQuestions()
+        })
     })
 }
