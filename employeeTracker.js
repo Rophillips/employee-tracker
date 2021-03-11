@@ -14,6 +14,7 @@ const connection = mysql.createConnection ({
 
 connection.connect(err =>{
     if (err) throw err;
+    console.log("Connection Id " + connection.threadID)
     startQuestions();
 })
 
@@ -39,7 +40,21 @@ inquirer.prompt({
             break;
         default:
             console.log("choose option");
+            //break;
+
+            case "view employees by roles":
+            viewRoles();
             break;
+        // default:
+        //     console.log("choose option");
+            //break;
+
+            case "view employees":
+            viewEmployees();
+            break;
+        // default:
+        //     console.log("choose option");
+            //break;
     }
 })}
 
@@ -53,10 +68,23 @@ function viewDepartments(){
     }) 
 }
 function viewEmployees(){
-    connection.connect(function(err){
+    
+    connection.query("SELECT * FROM employee",
+        //if (err) throw err;
+    (err, results) => {
         if (err) throw err;
-        console.log("Connection Id " + connection.threadID)
+        console.table(results);
         startQuestions();
+    
         
     })
+}
+
+function viewRoles(){
+    connection.query("SELECT * FROM role",
+    (err, results) =>{
+        if (err) throw err;
+        console.table(results);
+        startQuestions();
+    }) 
 }
