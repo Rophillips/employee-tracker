@@ -2,6 +2,12 @@ const inquirer = require("inquirer");
 const mysql = require("mysql");
 const cTable = require('console.table');
 
+const express = require("express");
+
+const app = express();
+
+//const PORT = process.env.PORT || 3000;
+
 
 
 const connection = mysql.createConnection ({
@@ -17,6 +23,8 @@ connection.connect(err =>{
     console.log("Connection Id " + connection.threadID)
     startQuestions();
 })
+
+//app.listen(PORT, () => console.log("listening on port: " + PORT));
 
 function startQuestions(){  
 inquirer.prompt({
@@ -55,6 +63,10 @@ inquirer.prompt({
         // default:
         //     console.log("choose option");
             //break;
+
+            case "add departments":
+            addDepartments();
+            break;
     }
 })}
 
@@ -87,4 +99,26 @@ function viewRoles(){
         console.table(results);
         startQuestions();
     }) 
+}
+
+function addDepartments(){
+    inquirer.prompt([
+        {
+            name: "name",
+            type: "input",
+            message: "What department would you like to add?"
+        }
+    ]).then(response => {
+        let query = connection.query(
+            "INSERT INTO department SET ?",
+            {
+                name: response.name
+            },
+            function(err) {
+                if (err) throw err
+                console.table(response);
+                startQuestions();
+            }
+        )
+    })
 }
