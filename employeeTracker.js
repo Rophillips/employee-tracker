@@ -6,7 +6,7 @@ const express = require("express");
 
 const app = express();
 
-//const PORT = process.env.PORT || 3000;
+//const PORT = process.env.PORT || 8080;
 
 
 
@@ -46,27 +46,41 @@ inquirer.prompt({
         case "view departments":
             viewDepartments();
             break;
-        default:
-            console.log("choose option");
+            default:
+                console.log("choose option");
+       
             //break;
 
-            case "view employees by roles":
+        case "view employees by roles":
             viewRoles();
             break;
         // default:
         //     console.log("choose option");
             //break;
 
-            case "view employees":
+        case "view employees":
             viewEmployees();
             break;
         // default:
         //     console.log("choose option");
             //break;
 
-            case "add departments":
+        case "add departments":
             addDepartments();
             break;
+
+        case "add roles":
+            addRoles();
+            break;
+
+        case "add employees":
+            addEmployess();
+            break;
+
+        case "update employee roles":
+            updateEmployees();
+            break;
+
     }
 })}
 
@@ -101,6 +115,7 @@ function viewRoles(){
     }) 
 }
 
+//Add departments
 function addDepartments(){
     inquirer.prompt([
         {
@@ -114,6 +129,37 @@ function addDepartments(){
             {
                 name: response.name
             },
+            function(err) {
+                if (err) throw err
+                console.table(response);
+                startQuestions();
+            }
+        )
+    })
+}
+
+
+//Add roles and prompt user choices
+function addRoles() {
+    inquirer.prompt([
+        {
+            name: "Title",
+            type: "input",
+            message: "What is the roles Title?"
+        },
+        {
+            name: "Salary",
+            type: "input",
+            message: "What is the Salary?"
+        }
+    ]).then(function(response) {
+        connection.query(
+            "INSERT INTO role SET ?",
+            {
+                title: response.Title,
+                salary: response.Salary,
+            },
+            
             function(err) {
                 if (err) throw err
                 console.table(response);
