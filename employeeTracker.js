@@ -160,6 +160,7 @@ function addRoles() {
             message: "What is the Salary?"
         }
     ]).then(function(response) {
+        //connecting query to add title, salary
         connection.query(
             "INSERT INTO role SET ?",
             {
@@ -176,7 +177,7 @@ function addRoles() {
     })
 }
 
-//select role function queries role title for add employee questions
+//select role function queries role title for adding employee questions
 let roleArr = [];
 function selectRole() {
     connection.query("SELECT * FROM role", function(err, response){
@@ -187,7 +188,7 @@ function selectRole() {
     })
         return roleArr;
 }
-
+//add employees function
 function addEmployees() {
     inquirer.prompt([
         {
