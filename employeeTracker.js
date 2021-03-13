@@ -87,9 +87,9 @@ inquirer.prompt({
     }
 })}
 
-//view departments
+//view employees by departments
 function viewDepartmentByRole(){
-    connection.query("SELECT employee.first_name, employee.last_name, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
+    connection.query("SELECT employee.first_name, employee.last_name, department.name AS Department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id;",
     (err, results) =>{
         if (err) throw err;
         console.table(results);
