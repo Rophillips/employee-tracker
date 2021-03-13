@@ -12,4 +12,3 @@ Javascript - Used to base functionality of functions and prompts within the appl
 Here is the link to the live demo:
 https://drive.google.com/file/d/1ES5eKTFqPxNvaWC52erIJzsh0dc24U4O/view
 
-Screen Shot 2021-03-13 at 5.44.15 PM
